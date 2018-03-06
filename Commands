@@ -1,0 +1,62 @@
+COMANDOS 
+-----------------------------
+PRIVILEGIADO  enable
+
+	show ip route			-> Tabla de direcciones Router
+	copy running-config startup-config ->Guardar configuración
+
+CONFIGURACIÓN	configure terminal
+
+R2(config)#interface INTERFACE
+R2(config-if)#ip address IP  MASK
+R2(config-if)#no shutdown
+R2(config-if)#exit
+ 	
+RUTEO
+
+R1(config)#ip route RED_DESTINO MASK_DESTINO (INTERFAZ_SALIDA || IP_SIG_SALTO) n      n-> distancia administrativa
+
+Routers
+
+MODULOS
+
+NM-2FE2W
+
+VLANs (Switch servidor conectado a Router)
+----------
+1. Activar modo y dominio del Switch
+	(config)#vtp mode [server/client/transparent]
+	(config)#vtp domain [NAME]
+2. Crear VLAN (Server)
+	(config)#vlan [VLANID]
+			#name [NAME]
+3. Asignar VLAN a una interfaz access >:C
+	(config)#interface [INTERFACE]
+	(config-if)#switchport mode access
+	(config-if)#switchport access vlan [VLANID]
+4. Activar puerto troncal
+	(config)#interface [INTERFACE]
+	(config-if)#switchport mode trunk
+
+Comunicación entre VLANs (routers)
+------------------------------
+	(config)#interface [INTERFACE].[VLANID]
+	(config-subif)#encapsulation dot1q [VLANIDs]
+	(config-subif)#ip address [IP] [MASK]
+	(config)#interface [INTERFACE]
+	(config)#no shutdown
+
+
+router#show vlan
+router#show vlan brief
+router#show interface trunk
+router#show vtp status
+
+Post-secuity (Switch)
+-----------------------------
+	(config)#interface [INTERFACE]
+	(config)#switchport mode access 
+	(config)#switchport port-security
+	(config)#switchport port-security maximum 1
+	(config)#switchport port-security mac-address[MAC_ADDRESS | STICKY]
+	(config)#switchport port-security violation [TYPE]
